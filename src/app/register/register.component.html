@@ -1,0 +1,91 @@
+<h1 style="text-align: center;">REGISTRATION-FORM</h1>
+<form #f="ngForm" (ngSubmit)="onSubmit(f,firstname,lastname,password,email,country,countrycode,mobileno)">
+    <div class="input">
+        <label>First Name :</label>
+        <input type="text" name="firstname" ngModel #firstname="ngModel" class="form-control" pattern='^[A-Za-z0-9 ]+$' required [appError]="firstname" />
+        <div *ngIf="firstname.errors && (firstname.dirty || firstname.touched)">
+            <p *ngIf="firstname.errors.required">Firstname is required</p>
+            <p *ngIf="firstname.errors.pattern">Enter valid firstname</p>
+        </div>
+    </div>
+    <br/><br/>
+
+    <div class="input">
+        <label>Last Name :</label>
+        <input type="text" name="lastname" ngModel #lastname="ngModel" class="form-control" pattern='^[A-Za-z0-9 ]+$' required [appError]="lastname" />
+        <div *ngIf="lastname.errors && (lastname.dirty || lastname.touched)">
+            <p *ngIf="lastname.errors.required">Lastname is required</p>
+            <p *ngIf="lastname.errors.pattern">Enter valid lastname</p>
+        </div>
+    </div>
+    <br/><br/>
+
+    <div class="input">
+        <label>Password :</label>
+        <input type="password" name="password" ngModel #password="ngModel" class="form-control" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required [appError]="password">
+        <div *ngIf="password.errors && (password.dirty || password.touched)">
+            <p *ngIf="password.errors.required">Password is required</p>
+            <p *ngIf="password.errors.pattern">Password contain minimum 1 capital letter,special character and number</p>
+
+        </div>
+
+    </div>
+    <br/><br/>
+
+    <div class="input">
+        <label>Confirm Password :</label>
+        <input type="email" name="cnfpassword" ngModel #cnfpassword="ngModel" class="form-control" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required [appError]="cnfpassword">
+        <div *ngIf="cnfpassword.errors && (cnfpassword.dirty || cnfpassword.touched)">
+            <p *ngIf="cnfpassword.errors.required">Confirm password is required</p>
+            <p *ngIf="cnfpassword.errors.pattern">Enter valid password</p>
+        </div>
+    </div>
+    <br/><br/>
+
+    <div class="input">
+        <label>Email :</label>
+        <input type="email" name="email" ngModel #email="ngModel" class="form-control" pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$" required [appError]="email">
+        <div *ngIf="email.errors && (email.dirty || email.touched)">
+            <p *ngIf="email.errors.required">Email is required</p>
+            <p *ngIf="email.errors.minlength">Enter valid Email ID</p>
+        </div>
+    </div>
+    <br/><br/>
+
+    <label>Date Of Birth :</label>
+    <input type="date" name="datepipe" [(ngModel)]="datepipe"><br/><br/>
+    <span>India Date Format: {{datepipe | date : 'dd-MM-yyyy'}}</span><br/><br/>
+
+    <span>USA Date Format: {{datepipe | date : 'full':'GMT+530'}}</span><br/><br/>
+
+    <span>Custom Date Format :{{datepipe| cusdate :'MM-dd-yyyy'}}</span>
+
+    <br/><br/>
+
+    <div class="input">
+        <label>Country :</label>
+        <select type="country" name="country" ngModel #country="ngModel" class="form-select" required [appError]="country">
+          <option value="None" selected></option>
+                    <option *ngFor="let country of countryNames" [value]="country">{{country}}</option>
+          </select>
+        <div *ngIf="country.value==='None' && (country.dirty || country.touched)">
+            <p *ngIf="country.value.required">Select country</p>
+        </div>
+    </div>
+    <br/><br/>
+
+    <div class="input">
+        <label>Country Code :</label>
+        <input type="text" name="countrycode" ngModel #countrycode="ngModel" class="form-control" [value]="code[country.value]===undefined?'':code[country.value]" disabled [appError]="countrycode">
+    </div>
+
+    <div class="input">
+        <label>Mobile Number :</label>
+        <input type="mobileno" name="mobileno" ngModel #mobileno="ngModel" class="form-control" pattern="^[0-9]{10,10}$" required [appError]="mobileno">
+        <div *ngIf="mobileno.errors && (mobileno.dirty || mobileno.touched)">
+            <p *ngIf="mobileno.errors.required">Mobile number is required</p>
+            <p *ngIf="mobileno.errors.pattern">Mobile number contains 10 digits</p>
+        </div>
+    </div>
+
+    <button [class]="(f.errors)||(password.value!==cnfpassword.value)" type="submit" [disabled]="(f.errors)||(password.value!==cnfpassword.value)">SUBMIT</button>
